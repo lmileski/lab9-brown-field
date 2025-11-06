@@ -3,6 +3,7 @@ import { TodoModel } from '../models/todo-model.js';
 import { StorageService } from '../services/storage-service.js';
 import './todo-form.js';
 import './todo-list.js';
+import './todo-filter.js';
 
 /**
  * TodoApp - Main application component.
@@ -14,12 +15,15 @@ import './todo-list.js';
  * @property {Array<Object>} todos - Array of todo items from the model
  * @property {number} activeCount - Count of incomplete todos
  * @property {number} completedCount - Count of completed todos
+ * @property {string} currentFilter - Current filter selection
  */
 export class TodoApp extends LitElement {
   static properties = {
     todos: { state: true },
     activeCount: { state: true },
-    completedCount: { state: true }
+    completedCount: { state: true },
+    currentFilter: { state: true },
+    totalCount: { state: true }
   };
 
   static styles = css`
@@ -135,15 +139,19 @@ export class TodoApp extends LitElement {
     super();
     this.storageService = new StorageService();
     this.model = new TodoModel(this.storageService);
-    this.todos = this.model.todos;
+    this.todos = this.model.filteredTodos;
     this.activeCount = this.model.activeCount;
     this.completedCount = this.model.completedCount;
+    this.currentFilter = this.model.filter;
+    this.totalCount = this.model.todos.length;
 
     // Subscribe to model changes
     this.model.subscribe(() => {
-      this.todos = [...this.model.todos];
+      this.todos = [...this.model.filteredTodos];
       this.activeCount = this.model.activeCount;
       this.completedCount = this.model.completedCount;
+      this.currentFilter = this.model.filter;
+      this.totalCount = this.model.todos.length;
     });
   }
 
@@ -201,6 +209,15 @@ export class TodoApp extends LitElement {
     }
   }
 
+  /**
+   * Handles filter change from filter tabs.
+   * 
+   * @param {CustomEvent} e - Event with detail.filter
+   */
+  handleFilterChange(e) {
+    this.model.setFilter(e.detail.filter);
+  }
+
   render() {
     return html`
       <div class="app-container">
@@ -209,7 +226,7 @@ export class TodoApp extends LitElement {
 
         <div class="stats">
           <div class="stat-item">
-            <div class="stat-value">${this.todos.length}</div>
+            <div class="stat-value">${this.totalCount}</div>
             <div class="stat-label">Total</div>
           </div>
           <div class="stat-item">
@@ -225,6 +242,11 @@ export class TodoApp extends LitElement {
         <todo-form
           @add-todo=${this.handleAddTodo}>
         </todo-form>
+
+        <todo-filter
+          .currentFilter=${this.currentFilter}
+          @filter-change=${this.handleFilterChange}>
+        </todo-filter>
 
         <todo-list
           .todos=${this.todos}
@@ -243,7 +265,7 @@ export class TodoApp extends LitElement {
           <button
             class="clear-all"
             @click=${this.handleClearAll}
-            ?disabled=${this.todos.length === 0}>
+            ?disabled=${this.totalCount === 0}>
             Clear All
           </button>
         </div>

@@ -38,6 +38,11 @@ export class TodoModel {
      * @private
      */
     this.nextId = Math.max(maxId + 1, this.storage.load('nextId', 1));
+    
+    /**
+     * @type {string}
+     */
+    this.filter = 'all'; // 'all' | 'active' | 'completed'
   }
 
   /**
@@ -184,6 +189,34 @@ export class TodoModel {
    */
   get completedCount() {
     return this.todos.filter(t => t.completed).length;
+  }
+
+  /**
+   * Gets filtered todos based on current filter.
+   * 
+   * @returns {Array<Object>} Filtered todo array
+   */
+  get filteredTodos() {
+    switch (this.filter) {
+    case 'active':
+      return this.todos.filter(t => !t.completed);
+    case 'completed':
+      return this.todos.filter(t => t.completed);
+    default:
+      return this.todos;
+    }
+  }
+
+  /**
+   * Sets the current filter and notifies listeners.
+   * 
+   * @param {string} filter - Filter type: 'all', 'active', or 'completed'
+   */
+  setFilter(filter) {
+    if (filter === 'all' || filter === 'active' || filter === 'completed') {
+      this.filter = filter;
+      this.notify();
+    }
   }
 
   /**
