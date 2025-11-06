@@ -9,10 +9,10 @@ export class StorageService {
   /**
    * Save data to localStorage
    */
-  save(k, d) {
+  save(key, data) {
     try {
-      const fk = `${this.storageKey}_${k}`;
-      localStorage.setItem(fk, JSON.stringify(d));
+      const fullKey = `${this.storageKey}_${key}`;
+      localStorage.setItem(fullKey, JSON.stringify(data));
     } catch (error) {
       console.error('Failed to save to localStorage:', error);
     }
@@ -35,12 +35,12 @@ export class StorageService {
   /**
    * Remove data from localStorage
    */
-  remove(k) {
+  remove(key) {
     try {
-      const fullK = `${this.storageKey}_${k}`;
-      localStorage.removeItem(fullK);
-    } catch (e) {
-      console.error('Failed to remove from localStorage:', e);
+      const fullKey = `${this.storageKey}_${key}`;
+      localStorage.removeItem(fullKey);
+    } catch (error) {
+      console.error('Failed to remove from localStorage:', error);
     }
   }
 
