@@ -31,14 +31,14 @@ export class TodoItem extends LitElement {
       align-items: center;
       gap: 12px;
       padding: 16px;
-      background: white;
+      background: var(--color-surface, white);
       border-radius: 8px;
       margin-bottom: 8px;
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.2s, background 0.3s ease;
     }
 
     .todo-item:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px var(--color-surface-hover, rgba(0, 0, 0, 0.1));
     }
 
     .checkbox {
@@ -50,23 +50,25 @@ export class TodoItem extends LitElement {
     .todo-text {
       flex: 1;
       font-size: 16px;
-      color: #333;
+      color: var(--color-text, #333);
       word-break: break-word;
+      transition: color 0.3s ease;
     }
 
     .todo-text.completed {
-      color: #999;
+      color: var(--color-text-completed, #999);
     }
 
     .edit-input {
       flex: 1;
       padding: 8px;
       font-size: 16px;
-      border: 2px solid #667eea;
+      border: 2px solid var(--color-primary, #667eea);
       border-radius: 4px;
       outline: none;
-      color: #333;
-      background: white;
+      color: var(--color-text, #333);
+      background: var(--color-surface, white);
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .button-group {
@@ -84,39 +86,39 @@ export class TodoItem extends LitElement {
     }
 
     .edit-btn {
-      background: #4CAF50;
+      background: var(--color-btn-edit, #4CAF50);
       color: white;
     }
 
     .edit-btn:hover {
-      background: #45a049;
+      background: var(--color-btn-edit-hover, #45a049);
     }
 
     .delete-btn {
-      background: #f44336;
+      background: var(--color-btn-delete, #f44336);
       color: white;
     }
 
     .delete-btn:hover {
-      background: #da190b;
+      background: var(--color-btn-delete-hover, #da190b);
     }
 
     .save-btn {
-      background: #2196F3;
+      background: var(--color-btn-save, #2196F3);
       color: white;
     }
 
     .save-btn:hover {
-      background: #0b7dda;
+      background: var(--color-btn-save-hover, #0b7dda);
     }
 
     .cancel-btn {
-      background: #757575;
+      background: var(--color-btn-cancel, #757575);
       color: white;
     }
 
     .cancel-btn:hover {
-      background: #616161;
+      background: var(--color-btn-cancel-hover, #616161);
     }
   `;
 

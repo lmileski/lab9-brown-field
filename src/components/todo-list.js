@@ -24,8 +24,9 @@ export class TodoList extends LitElement {
     .empty-state {
       text-align: center;
       padding: 40px 20px;
-      color: white;
+      color: var(--color-text-muted, white);
       font-size: 18px;
+      transition: color 0.3s ease;
     }
 
     .empty-icon {

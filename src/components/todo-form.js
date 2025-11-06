@@ -29,19 +29,21 @@ export class TodoForm extends LitElement {
       flex: 1;
       padding: 12px 16px;
       font-size: 16px;
-      border: 2px solid #e0e0e0;
+      border: 2px solid var(--color-border, #e0e0e0);
       border-radius: 8px;
       outline: none;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, background 0.3s ease, color 0.3s ease;
+      background: var(--color-surface, white);
+      color: var(--color-text, #333);
     }
 
     input:focus {
-      border-color: #667eea;
+      border-color: var(--color-primary, #667eea);
     }
 
     button {
       padding: 12px 24px;
-      background: #667eea;
+      background: var(--color-primary, #667eea);
       color: white;
       border: none;
       border-radius: 8px;
@@ -52,7 +54,7 @@ export class TodoForm extends LitElement {
     }
 
     button:hover {
-      background: #5568d3;
+      background: var(--color-primary-hover, #5568d3);
     }
 
     button:active {
@@ -60,7 +62,7 @@ export class TodoForm extends LitElement {
     }
 
     button:disabled {
-      background: #ccc;
+      background: var(--color-btn-disabled, #ccc);
       cursor: not-allowed;
     }
   `;

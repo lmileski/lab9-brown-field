@@ -23,9 +23,10 @@ export class TodoFilter extends LitElement {
     .filter-tabs {
       display: flex;
       gap: 8px;
-      background: #f5f5f5;
+      background: var(--color-background, #f5f5f5);
       padding: 8px;
       border-radius: 8px;
+      transition: background 0.3s ease;
     }
 
     .filter-tab {
@@ -34,7 +35,7 @@ export class TodoFilter extends LitElement {
       border: none;
       border-radius: 6px;
       background: transparent;
-      color: #666;
+      color: var(--color-text-muted, #666);
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
@@ -43,11 +44,11 @@ export class TodoFilter extends LitElement {
 
     .filter-tab:hover {
       background: rgba(102, 126, 234, 0.1);
-      color: #667eea;
+      color: var(--color-primary, #667eea);
     }
 
     .filter-tab.active {
-      background: #667eea;
+      background: var(--color-primary, #667eea);
       color: white;
     }
   `;

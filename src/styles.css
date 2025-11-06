@@ -3,11 +3,55 @@
   --color-primary: #667eea;
   --color-secondary: #764ba2;
   
-  /* UI colors */
+  /* Light theme colors */
   --color-text: #333;
   --color-text-muted: #666;
+  --color-text-completed: #999;
   --color-border: #e0e0e0;
   --color-background: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-surface-hover: rgba(0, 0, 0, 0.05);
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  
+  /* Button colors */
+  --color-btn-edit: #4CAF50;
+  --color-btn-edit-hover: #45a049;
+  --color-btn-delete: #f44336;
+  --color-btn-delete-hover: #da190b;
+  --color-btn-save: #2196F3;
+  --color-btn-save-hover: #0b7dda;
+  --color-btn-cancel: #757575;
+  --color-btn-cancel-hover: #616161;
+  --color-btn-warning: #ff9800;
+  --color-btn-warning-hover: #f57c00;
+  --color-btn-disabled: #ccc;
+  --color-primary-hover: #5568d3;
+}
+
+body.dark-mode {
+  /* Dark theme colors */
+  --color-text: #e0e0e0;
+  --color-text-muted: #a0a0a0;
+  --color-text-completed: #666;
+  --color-border: #404040;
+  --color-background: #2a2a2a;
+  --color-surface: #1e1e1e;
+  --color-surface-hover: rgba(255, 255, 255, 0.1);
+  --color-shadow: rgba(0, 0, 0, 0.5);
+  
+  /* Button colors for dark mode */
+  --color-btn-edit: #66BB6A;
+  --color-btn-edit-hover: #81C784;
+  --color-btn-delete: #EF5350;
+  --color-btn-delete-hover: #E53935;
+  --color-btn-save: #42A5F5;
+  --color-btn-save-hover: #64B5F6;
+  --color-btn-cancel: #9E9E9E;
+  --color-btn-cancel-hover: #BDBDBD;
+  --color-btn-warning: #FFA726;
+  --color-btn-warning-hover: #FFB74D;
+  --color-btn-disabled: #555;
+  --color-primary-hover: #7c8ff0;
 }
 
 * {
@@ -24,6 +68,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  transition: background 0.3s ease;
 }
 
 main {

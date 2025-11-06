@@ -16,6 +16,7 @@ import './todo-filter.js';
  * @property {number} activeCount - Count of incomplete todos
  * @property {number} completedCount - Count of completed todos
  * @property {string} currentFilter - Current filter selection
+ * @property {boolean} darkMode - Whether dark mode is enabled
  */
 export class TodoApp extends LitElement {
   static properties = {
@@ -23,7 +24,8 @@ export class TodoApp extends LitElement {
     activeCount: { state: true },
     completedCount: { state: true },
     currentFilter: { state: true },
-    totalCount: { state: true }
+    totalCount: { state: true },
+    darkMode: { state: true }
   };
 
   static styles = css`
@@ -32,22 +34,23 @@ export class TodoApp extends LitElement {
     }
 
     .app-container {
-      background: white;
+      background: var(--color-surface, white);
       border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 40px var(--color-shadow, rgba(0, 0, 0, 0.2));
       padding: 32px;
       min-height: 400px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     h1 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: var(--color-text, #333);
       font-size: 32px;
       font-weight: 700;
     }
 
     .subtitle {
-      color: #666;
+      color: var(--color-text-muted, #666);
       margin-bottom: 24px;
       font-size: 14px;
     }
@@ -57,9 +60,10 @@ export class TodoApp extends LitElement {
       justify-content: space-between;
       align-items: center;
       padding: 16px;
-      background: #f5f5f5;
+      background: var(--color-background, #f5f5f5);
       border-radius: 8px;
       margin-bottom: 20px;
+      transition: background 0.3s ease;
     }
 
     .stat-item {
@@ -71,12 +75,12 @@ export class TodoApp extends LitElement {
     .stat-value {
       font-size: 24px;
       font-weight: 700;
-      color: #667eea;
+      color: var(--color-primary, #667eea);
     }
 
     .stat-label {
       font-size: 12px;
-      color: #666;
+      color: var(--color-text-muted, #666);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -99,21 +103,21 @@ export class TodoApp extends LitElement {
     }
 
     .clear-completed {
-      background: #ff9800;
+      background: var(--color-btn-warning, #ff9800);
       color: white;
     }
 
     .clear-completed:hover {
-      background: #f57c00;
+      background: var(--color-btn-warning-hover, #f57c00);
     }
 
     .clear-all {
-      background: #f44336;
+      background: var(--color-btn-delete, #f44336);
       color: white;
     }
 
     .clear-all:hover {
-      background: #da190b;
+      background: var(--color-btn-delete-hover, #da190b);
     }
 
     button:disabled {
@@ -124,10 +128,28 @@ export class TodoApp extends LitElement {
     .footer {
       margin-top: 20px;
       padding-top: 20px;
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid var(--color-border, #e0e0e0);
       text-align: center;
-      color: #666;
+      color: var(--color-text-muted, #666);
       font-size: 12px;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 8px 12px;
+      background: var(--color-background, #f5f5f5);
+      border: 1px solid var(--color-border, #e0e0e0);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
     }
   `;
 
@@ -144,6 +166,10 @@ export class TodoApp extends LitElement {
     this.completedCount = this.model.completedCount;
     this.currentFilter = this.model.filter;
     this.totalCount = this.model.todos.length;
+    
+    // Load dark mode preference
+    this.darkMode = this.storageService.load('darkMode', false);
+    this.applyTheme();
 
     // Subscribe to model changes
     this.model.subscribe(() => {
@@ -153,6 +179,19 @@ export class TodoApp extends LitElement {
       this.currentFilter = this.model.filter;
       this.totalCount = this.model.todos.length;
     });
+  }
+
+  /**
+   * Applies the current theme to the document body.
+   * 
+   * @private
+   */
+  applyTheme() {
+    if (this.darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
   }
 
   /**
@@ -218,9 +257,25 @@ export class TodoApp extends LitElement {
     this.model.setFilter(e.detail.filter);
   }
 
+  /**
+   * Toggles dark mode on/off and persists preference.
+   */
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    this.storageService.save('darkMode', this.darkMode);
+    this.applyTheme();
+  }
+
   render() {
     return html`
       <div class="app-container">
+        <button 
+          class="theme-toggle" 
+          @click=${this.toggleDarkMode}
+          aria-label="Toggle dark mode">
+          ${this.darkMode ? '☀️' : '🌙'}
+        </button>
+
         <h1>My Tasks</h1>
         <p class="subtitle">Stay organized and productive</p>
 
