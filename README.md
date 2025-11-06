@@ -2,7 +2,7 @@
 
 A modern, feature-rich todo application built with Lit web components, showcasing clean architecture, comprehensive testing, and production-ready deployment.
 
-[![lab9-brown-field](https://img.shields.io/badge/deploy-netlify-00C7B7)](https://lab9-brown-field.netlify.app/)
+[lab9-brown-field](https://lab9-brown-field.netlify.app/)
 
 ## Features
 
