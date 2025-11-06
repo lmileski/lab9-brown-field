@@ -1,7 +1,18 @@
 import { LitElement, html, css } from 'lit';
 
 /**
- * TodoItem - Individual todo item component
+ * TodoItem - Individual todo item component.
+ * Handles display, editing, toggling completion, and deletion.
+ * 
+ * @class
+ * @extends {LitElement}
+ * @fires toggle-todo - Dispatched when checkbox is toggled
+ * @fires delete-todo - Dispatched when delete button is clicked
+ * @fires update-todo - Dispatched when todo text is edited and saved
+ * 
+ * @property {Object} todo - The todo object to display
+ * @property {boolean} isEditing - Whether the item is in edit mode
+ * @property {string} editValue - Current value of the edit input
  */
 export class TodoItem extends LitElement {
   static properties = {
@@ -109,12 +120,19 @@ export class TodoItem extends LitElement {
     }
   `;
 
+  /**
+   * Creates a TodoItem instance.
+   */
   constructor() {
     super();
     this.isEditing = false;
     this.editValue = '';
   }
 
+  /**
+   * Handles toggling the todo's completion status.
+   * Dispatches toggle-todo event.
+   */
   handleToggle() {
     this.dispatchEvent(new CustomEvent('toggle-todo', {
       detail: { id: this.todo.id },
@@ -123,6 +141,10 @@ export class TodoItem extends LitElement {
     }));
   }
 
+  /**
+   * Handles deleting the todo with confirmation.
+   * Dispatches delete-todo event.
+   */
   handleDelete() {
     if (confirm('Delete this todo?')) {
       this.dispatchEvent(new CustomEvent('delete-todo', {
@@ -133,11 +155,18 @@ export class TodoItem extends LitElement {
     }
   }
 
+  /**
+   * Enters edit mode and loads current todo text.
+   */
   handleEdit() {
     this.isEditing = true;
     this.editValue = this.todo.text;
   }
 
+  /**
+   * Saves the edited todo text if valid.
+   * Dispatches update-todo event and exits edit mode.
+   */
   handleSave() {
     const trimmedValue = this.editValue.trim();
     if (trimmedValue) {
@@ -152,11 +181,20 @@ export class TodoItem extends LitElement {
     this.editValue = '';
   }
 
+  /**
+   * Cancels editing and exits edit mode without saving.
+   */
   handleCancel() {
     this.isEditing = false;
     this.editValue = '';
   }
 
+  /**
+   * Handles keyboard shortcuts in edit mode.
+   * Enter saves, Escape cancels.
+   * 
+   * @param {KeyboardEvent} e - Keyboard event
+   */
   handleKeyDown(e) {
     if (e.key === 'Enter') {
       this.handleSave();

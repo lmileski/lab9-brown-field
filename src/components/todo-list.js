@@ -3,7 +3,13 @@ import { repeat } from 'lit/directives/repeat.js';
 import './todo-item.js';
 
 /**
- * TodoList - Displays a list of todos
+ * TodoList - Displays a list of todos using Lit's repeat directive.
+ * Shows empty state when no todos exist.
+ * 
+ * @class
+ * @extends {LitElement}
+ * 
+ * @property {Array<Object>} todos - Array of todo items to display
  */
 export class TodoList extends LitElement {
   static properties = {

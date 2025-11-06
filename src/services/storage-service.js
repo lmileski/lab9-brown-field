@@ -1,13 +1,28 @@
 /**
- * StorageService - Handles localStorage operations for the TODO app
+ * StorageService - Handles localStorage operations for the TODO app.
+ * Provides a simple CRUD interface with automatic error handling.
+ * 
+ * @class
  */
 export class StorageService {
+  /**
+   * Creates a StorageService instance.
+   * 
+   * @param {string} [storageKey='todos'] - Namespace prefix for localStorage keys
+   */
   constructor(storageKey = 'todos') {
+    /**
+     * @type {string}
+     * @private
+     */
     this.storageKey = storageKey;
   }
 
   /**
-   * Save data to localStorage
+   * Saves data to localStorage with JSON serialization.
+   * 
+   * @param {string} key - The key to save under (will be prefixed with storageKey)
+   * @param {*} data - The data to save (will be JSON stringified)
    */
   save(key, data) {
     try {
@@ -19,7 +34,11 @@ export class StorageService {
   }
 
   /**
-   * Load data from localStorage
+   * Loads data from localStorage with JSON parsing.
+   * 
+   * @param {string} key - The key to load (will be prefixed with storageKey)
+   * @param {*} [defaultValue=null] - Value to return if key doesn't exist or parsing fails
+   * @returns {*} The parsed data or defaultValue
    */
   load(key, defaultValue = null) {
     try {
@@ -39,7 +58,9 @@ export class StorageService {
   }
 
   /**
-   * Remove data from localStorage
+   * Removes a specific key from localStorage.
+   * 
+   * @param {string} key - The key to remove (will be prefixed with storageKey)
    */
   remove(key) {
     try {
@@ -51,7 +72,8 @@ export class StorageService {
   }
 
   /**
-   * Clear all data for this app
+   * Clears all data for this app from localStorage.
+   * Only removes keys that start with the storageKey prefix.
    */
   clear() {
     try {

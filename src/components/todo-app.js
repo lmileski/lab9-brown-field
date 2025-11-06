@@ -5,8 +5,15 @@ import './todo-form.js';
 import './todo-list.js';
 
 /**
- * TodoApp - Main application component
- * Coordinates between Model and View components
+ * TodoApp - Main application component.
+ * Coordinates between Model and View components using the Observer pattern.
+ * 
+ * @class
+ * @extends {LitElement}
+ * 
+ * @property {Array<Object>} todos - Array of todo items from the model
+ * @property {number} activeCount - Count of incomplete todos
+ * @property {number} completedCount - Count of completed todos
  */
 export class TodoApp extends LitElement {
   static properties = {
@@ -120,6 +127,10 @@ export class TodoApp extends LitElement {
     }
   `;
 
+  /**
+   * Creates a TodoApp instance.
+   * Initializes the model and subscribes to changes.
+   */
   constructor() {
     super();
     this.storageService = new StorageService();
@@ -136,28 +147,54 @@ export class TodoApp extends LitElement {
     });
   }
 
+  /**
+   * Handles adding a new todo from the form.
+   * 
+   * @param {CustomEvent} e - Event with detail.text containing the todo text
+   */
   handleAddTodo(e) {
     this.model.addTodo(e.detail.text);
   }
 
+  /**
+   * Handles toggling a todo's completion status.
+   * 
+   * @param {CustomEvent} e - Event with detail.id of the todo to toggle
+   */
   handleToggleTodo(e) {
     this.model.toggleComplete(e.detail.id);
   }
 
+  /**
+   * Handles deleting a todo.
+   * 
+   * @param {CustomEvent} e - Event with detail.id of the todo to delete
+   */
   handleDeleteTodo(e) {
     this.model.deleteTodo(e.detail.id);
   }
 
+  /**
+   * Handles updating a todo's text.
+   * 
+   * @param {CustomEvent} e - Event with detail.id and detail.text
+   */
   handleUpdateTodo(e) {
     this.model.updateTodo(e.detail.id, e.detail.text);
   }
 
+  /**
+   * Handles clearing all completed todos with confirmation.
+   */
   handleClearCompleted() {
     if (confirm('Clear all completed todos?')) {
       this.model.clearCompleted();
     }
   }
 
+  /**
+   * Handles clearing all todos with confirmation.
+   */
   handleClearAll() {
     if (confirm('Clear ALL todos? This cannot be undone.')) {
       this.model.clearAll();

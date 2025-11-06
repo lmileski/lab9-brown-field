@@ -1,7 +1,13 @@
 import { LitElement, html, css } from 'lit';
 
 /**
- * TodoForm - Input form for adding new todos
+ * TodoForm - Input form for adding new todos.
+ * 
+ * @class
+ * @extends {LitElement}
+ * @fires add-todo - Dispatched when a new todo is submitted
+ * 
+ * @property {string} inputValue - Current value of the input field
  */
 export class TodoForm extends LitElement {
   static properties = {
@@ -59,11 +65,20 @@ export class TodoForm extends LitElement {
     }
   `;
 
+  /**
+   * Creates a TodoForm instance.
+   */
   constructor() {
     super();
     this.inputValue = '';
   }
 
+  /**
+   * Handles form submission.
+   * Dispatches add-todo event with trimmed text and clears input.
+   * 
+   * @param {Event} e - Form submit event
+   */
   handleSubmit(e) {
     e.preventDefault();
     const text = this.inputValue.trim();
@@ -79,6 +94,11 @@ export class TodoForm extends LitElement {
     }
   }
 
+  /**
+   * Handles input changes.
+   * 
+   * @param {Event} e - Input event
+   */
   handleInput(e) {
     this.inputValue = e.target.value;
   }
