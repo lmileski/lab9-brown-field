@@ -2,7 +2,7 @@
 
 A modern, feature-rich todo application built with Lit web components, showcasing clean architecture, comprehensive testing, and production-ready deployment.
 
-[lab9-brown-field](https://lab9-brown-field.netlify.app/)
+View Here: **[lab9-brown-field](https://lab9-brown-field.netlify.app/)**
 
 ## Features
 
@@ -20,10 +20,6 @@ A modern, feature-rich todo application built with Lit web components, showcasin
 - Live counters for active and completed todos
 - Keyboard shortcuts - Enter to save, Escape to cancel
 - Auto-save on every change
-
-## Live Demo
-
-**[View Live Application](https://your-app-url.netlify.app)**
 
 ## Architecture
 
