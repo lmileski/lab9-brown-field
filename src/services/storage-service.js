@@ -25,9 +25,15 @@ export class StorageService {
     try {
       const fullKey = `${this.storageKey}_${key}`;
       const item = localStorage.getItem(fullKey);
-      return item ? JSON.parse(item) : defaultValue;
+      if (!item) {
+        return defaultValue;
+      }
+      
+      const parsed = JSON.parse(item);
+      return parsed;
     } catch (error) {
       console.error('Failed to load from localStorage:', error);
+      // Return default value on parse error
       return defaultValue;
     }
   }

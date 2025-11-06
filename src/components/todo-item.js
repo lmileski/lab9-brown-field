@@ -44,7 +44,6 @@ export class TodoItem extends LitElement {
     }
 
     .todo-text.completed {
-      text-decoration: line-through;
       color: #999;
     }
 
@@ -55,6 +54,8 @@ export class TodoItem extends LitElement {
       border: 2px solid #667eea;
       border-radius: 4px;
       outline: none;
+      color: #333;
+      background: white;
     }
 
     .button-group {
@@ -138,14 +139,17 @@ export class TodoItem extends LitElement {
   }
 
   handleSave() {
-    if (this.editValue.trim()) {
+    const trimmedValue = this.editValue.trim();
+    if (trimmedValue) {
       this.dispatchEvent(new CustomEvent('update-todo', {
-        detail: { id: this.todo.id, text: this.editValue },
+        detail: { id: this.todo.id, text: trimmedValue },
         bubbles: true,
         composed: true
       }));
-      this.isEditing = false;
     }
+    // Always exit edit mode after save attempt
+    this.isEditing = false;
+    this.editValue = '';
   }
 
   handleCancel() {
@@ -171,6 +175,7 @@ export class TodoItem extends LitElement {
             .value=${this.editValue}
             @input=${(e) => this.editValue = e.target.value}
             @keydown=${this.handleKeyDown}
+            maxlength="500"
             autofocus
           />
           <div class="button-group">
@@ -197,7 +202,6 @@ export class TodoItem extends LitElement {
           <button
             class="edit-btn"
             @click=${this.handleEdit}
-            ?disabled=${this.todo.completed}
             aria-label="Edit todo">
             Edit
           </button>

@@ -7,7 +7,12 @@ export class TodoModel {
     this.storage = storageService;
     this.todos = this.storage.load('items', []);
     this.listeners = [];
-    this.nextId = this.storage.load('nextId', 1);
+    
+    // Calculate nextId from existing todos to prevent ID conflicts
+    const maxId = this.todos.length > 0 
+      ? Math.max(...this.todos.map(t => t.id))
+      : 0;
+    this.nextId = Math.max(maxId + 1, this.storage.load('nextId', 1));
   }
 
   /**
@@ -32,9 +37,17 @@ export class TodoModel {
       return;
     }
 
+    const trimmedText = text.trim();
+    
+    // Validate max length
+    if (trimmedText.length > 500) {
+      console.warn('Todo text exceeds maximum length of 500 characters');
+      return;
+    }
+
     const todo = {
       id: this.nextId++,
-      text: text.trim(),
+      text: trimmedText,
       completed: false,
       createdAt: new Date().toISOString()
     };
@@ -48,9 +61,13 @@ export class TodoModel {
    * Toggle todo completion status
    */
   toggleComplete(id) {
-    const todo = this.todos.find(t => t.id === id);
-    if (todo) {
-      todo.completed = !todo.completed;
+    const index = this.todos.findIndex(t => t.id === id);
+    if (index !== -1) {
+      // Create a new todo object to trigger Lit re-rendering
+      this.todos[index] = {
+        ...this.todos[index],
+        completed: !this.todos[index].completed
+      };
       this.save();
       this.notify();
     }
@@ -69,12 +86,26 @@ export class TodoModel {
    * Update todo text
    */
   updateTodo(id, newText) {
-    const todo = this.todos.find(t => t.id === id);
-    if (todo && newText && newText.trim() !== '') {
-      todo.text = newText.trim();
-      this.save();
-      this.notify();
+    const index = this.todos.findIndex(t => t.id === id);
+    if (index === -1 || !newText || newText.trim() === '') {
+      return;
     }
+    
+    const trimmedText = newText.trim();
+    
+    // Validate max length
+    if (trimmedText.length > 500) {
+      console.warn('Todo text exceeds maximum length of 500 characters');
+      return;
+    }
+    
+    // Create a new todo object to trigger Lit re-rendering
+    this.todos[index] = {
+      ...this.todos[index],
+      text: trimmedText
+    };
+    this.save();
+    this.notify();
   }
 
   /**

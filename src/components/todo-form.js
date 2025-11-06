@@ -92,6 +92,7 @@ export class TodoForm extends LitElement {
           .value=${this.inputValue}
           @input=${this.handleInput}
           aria-label="New todo"
+          maxlength="500"
           autofocus
         />
         <button type="submit" ?disabled=${!this.inputValue.trim()}>

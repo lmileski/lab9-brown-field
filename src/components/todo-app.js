@@ -10,7 +10,9 @@ import './todo-list.js';
  */
 export class TodoApp extends LitElement {
   static properties = {
-    todos: { state: true }
+    todos: { state: true },
+    activeCount: { state: true },
+    completedCount: { state: true }
   };
 
   static styles = css`
@@ -123,10 +125,14 @@ export class TodoApp extends LitElement {
     this.storageService = new StorageService();
     this.model = new TodoModel(this.storageService);
     this.todos = this.model.todos;
+    this.activeCount = this.model.activeCount;
+    this.completedCount = this.model.completedCount;
 
     // Subscribe to model changes
     this.model.subscribe(() => {
       this.todos = [...this.model.todos];
+      this.activeCount = this.model.activeCount;
+      this.completedCount = this.model.completedCount;
     });
   }
 
@@ -170,11 +176,11 @@ export class TodoApp extends LitElement {
             <div class="stat-label">Total</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">${this.model.activeCount}</div>
+            <div class="stat-value">${this.activeCount}</div>
             <div class="stat-label">Active</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">${this.model.completedCount}</div>
+            <div class="stat-value">${this.completedCount}</div>
             <div class="stat-label">Completed</div>
           </div>
         </div>
@@ -194,7 +200,7 @@ export class TodoApp extends LitElement {
           <button
             class="clear-completed"
             @click=${this.handleClearCompleted}
-            ?disabled=${this.model.completedCount === 0}>
+            ?disabled=${this.completedCount === 0}>
             Clear Completed
           </button>
           <button
